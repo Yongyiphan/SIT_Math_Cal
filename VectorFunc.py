@@ -1,5 +1,6 @@
 
 
+from re import A
 import matplotlib.pyplot as plt
 
 
@@ -85,6 +86,19 @@ def length(self):
         value += pow(self.z,2)
     
     return sqrt(value)
+
+def Projection(V1, V2):
+    
+    V1V2 = DotProduct(V1, V2)
+    V2V2 = DotProduct(V2, V2)
+
+    return Scale(V2, (V1V2/V2V2))
+
+    
+def Multiply(V1, V2):
+    if V1.Is3D and V2.Is3D:
+        return Point(V1.x*V2.x, V1.y *V2.y, V1.z * V2.z)
+    return Point(V1.x * V2.x, V1.y *V2.y)
     
 
 def Angle(V1, V2):
@@ -119,14 +133,39 @@ if __name__ == '__main__':
     print("Part (d) => Angle between U and V = {0} ".format(Angle(U, V)))
     print("Part (e) => Angle between V-U and W-U = {0} ".format(Angle(Subtract(V, U), Subtract(W, U))))
 
-    print("Problem 2:") 
+    print("\nProblem 2:") 
     P = Point(2, 5)
     Q = Point(4, -1)
     R = Point(5, 2)
-    print("=> Part (a)\n MidPoints for \n Line PQ = {0},\n Line PR = {1}\n".format(MidPoint(P, Q).GetDis(), MidPoint(P, R).GetDis()))
-    print("=> Part (b)\n MidPoints for \n Line PQ-PR = {0}".format(MidPoint(MidPoint(P, Q), MidPoint(P, R)).GetDis()))
-
     
+    mpq = MidPoint(P, Q)
+    mpr = MidPoint(P, R)
+    print("=> Part (a)\n MidPoints for \n Line PQ = {0},\n Line PR = {1}\n".format(mpq.GetDis(), mpr.GetDis()))
+    mpqmpr = MidPoint(mpq, mpr)
+    print("=> Part (b)\n MidPoints for \n Line PQ-PR = {0}".format(mpqmpr.GetDis()))
+    
+    
+    print("PM => {0} ".format(Subtract(mpqmpr, P).GetDis()))
+    print("PQ => {0} ".format(Subtract(Q, P).GetDis()))
+    print("PR => {0} ".format(Subtract(R, P).GetDis()))
+    
+    P = Point(3,2)
+    Q = Point(5,0)
+    R = Point(2,-1)
+    PR = Subtract(R,P)
+    PQ = Subtract(Q, P)
+    QR = Subtract(R, Q)
+    
+    RP = Subtract(P, R)
+    RQ = Subtract(Q, R)
+    
+    A = Point(2,3)
+    B = Point(-2,4)
+    C = Point(-3, -2)
+    AC = Subtract(C, A)
+    AB = Subtract(B, A)
+    print("Projection AH = {0}".format(Projection(AC, AB).GetDis()))
+    print(Add(A, Projection(AC, AB)).GetDis())
 
 
     
