@@ -1,12 +1,7 @@
-
-
-from site import venv
 import matplotlib.pyplot as plt
-
 
 from math import *
 from mpl_toolkits.mplot3d import Axes3D
-
 
 class Point:
     def __init__(self, X, Y = None, Z = None):
@@ -62,7 +57,9 @@ class Vector:
             self.y = Y
             self.z = Z
         self.Is3D = False if Z == None else True
+
     
+        
     def GetDis(self):
         return (self.x, self.y, self.z) if self.Is3D else (self.x, self.y)
 
@@ -124,20 +121,29 @@ class Vector:
         #||X|| = sqrt(x^2 + y^2)
         absV1 = sqrt(self.GetAbs())
         absV2 = sqrt(V2.GetAbs())
-
         return degrees(acos(xy/(absV1 * absV2)))
 
+    def Projection(self, V2):
+            V1V2 = self.DotProduct(V2)
+            V2V2 = V2.DotProduct(V2)
+            return V2.Scale(V1V2/V2V2)
+        
+    def Multiply(V1, V2):
+        if V1.Is3D and V2.Is3D:
+            return Point(V1.x*V2.x, V1.y *V2.y, V1.z * V2.z)
+        return Point(V1.x * V2.x, V1.y *V2.y)
 
 if __name__ == '__main__':
-    U = Vector(7, -1)
-    V = Vector(2, -3)
+    U = Vector(-1, -2)
+    V = Vector( 3, 1)
     W = Vector(6, 4)
 
 
 
-    Var =  U.Scale(2).Add(V.Scale(3)).DotProduct(W)
+    Var =  V.Projection(U).GetDis()
     V2 = V.Scale(3)
     print(f"{Var}, {V2.GetDis()}")
+
 
 
 
